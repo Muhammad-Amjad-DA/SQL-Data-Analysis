@@ -27,19 +27,29 @@ This project demonstrates: multi-table joins across two to three tables; aggrega
 ## Example Questions Answered in queries.sql
 
 Q1: How much revenue did we make each month?
+
 Q2: Which products generate the most revenue?
+
 Q3: Who are our highest-value customers?
+
 Q4: What does our cumulative revenue look like over time?
+
 Q5: Which customers have placed more than one completed order?
+
 Q6: How is revenue trending month over month (growth percent)?
+
 Q7: Which countries and markets should we prioritize?
+
 Q8: Which customers are at risk of going inactive (recency)?
 
 ## How to Run
 
 Step 1: Create a new database in PostgreSQL (queries use DATE_TRUNC, which is Postgres syntax; MySQL users can substitute DATE_FORMAT).
+
 Step 2: Run schema.sql to create the tables.
+
 Step 3: Run sample_data.sql to load the sample dataset.
+
 Step 4: Run any query from queries.sql to see the results.
 
 ## Tools
