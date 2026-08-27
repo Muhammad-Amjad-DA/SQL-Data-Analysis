@@ -146,3 +146,38 @@ SELECT
 FROM last_order lo
 JOIN customers c ON c.customer_id = lo.customer_id
 ORDER BY days_since_last_order DESC;
+
+
+
+    -- 9) CUSTOMER SEGMENTATION (RFM-LITE)
+-- Skill: CTE + business-rule classification (CASE WHEN)
+-- Question: Which customers should marketing prioritize with limited budget?
+-- Approach: instead of generic quartiles, this uses simple, explainable
+-- business rules that a stakeholder can sanity-check at a glance -
+-- Recency (days since last order), Frequency (completed orders), and
+-- Monetary (total spend) are combined into three actionable segments.
+WITH customer_stats AS (
+        SELECT
+            c.customer_id,
+            c.customer_name,
+            COUNT(DISTINCT o.order_id)                      AS completed_orders,
+            SUM(oi.quantity * oi.unit_price)                AS total_spend,
+            MAX(o.order_date)                               AS last_order_date,
+            (DATE '2024-07-01' - MAX(o.order_date))         AS days_since_last_order
+        FROM customers c
+        JOIN orders o        ON o.customer_id = c.customer_id AND o.status = 'Completed'
+        JOIN order_items oi  ON oi.order_id = o.order_id
+        GROUP BY c.customer_id, c.customer_name
+    )
+SELECT
+    customer_name,
+    completed_orders,
+    ROUND(total_spend, 2)          AS total_spend,
+    days_since_last_order,
+    CASE
+        WHEN total_spend >= 150 AND completed_orders >= 2 THEN 'Loyal / High-Value'
+        WHEN days_since_last_order > 60                    THEN 'At Risk'
+        ELSE 'New / Low-Engagement'
+    END AS segment
+FROM customer_stats
+ORDER BY total_spend DESC;
