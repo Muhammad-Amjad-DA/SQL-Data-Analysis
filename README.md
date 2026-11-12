@@ -73,3 +73,4 @@ SQL (PostgreSQL syntax), relational database design.
 Muhammad Amjad - Data Analyst focused on SQL, Power BI, and Excel. See my [profile](https://github.com/Muhammad-Amjad-DA) for more projects.
  
  
+ 
